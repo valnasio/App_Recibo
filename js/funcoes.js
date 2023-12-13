@@ -83,16 +83,26 @@ function converteValorParaPalavras(valor) {
 	var valorDecimal = Math.round((valor - valorInteiro) * 100);
 
 	var valorInteiroEmPalavras = converteNumeroPorExtenso(valorInteiro);
-	var valorDecimalEmPalavras = converteNumeroPorExtenso(valorDecimal);
+	var valorDecimalEmPalavras = '';
+
+	// Verifica se há centavos
+	if (valorDecimal > 0) {
+		valorDecimalEmPalavras = 'E ' + converteNumeroPorExtenso(valorDecimal) + ' CENTAVOS';
+	}
 
 	var resultado = valorInteiroEmPalavras;
 
+	// Adiciona a parte de centavos ao resultado, apenas se houver centavos
 	if (valorDecimal > 0) {
-		resultado += ' E ' + valorDecimalEmPalavras;
+		resultado += ' REAIS ' + valorDecimalEmPalavras;
+	} else {
+		resultado += ' REAIS';
 	}
-	resultado += ' REAIS';
+
 	return resultado;
 }
+
+
 
 
 //---------RECIBO COMISSÃO--------------------------------
@@ -101,7 +111,7 @@ function getDadosComissao() {
 	var dataAtual = new Date();
 
 	// Preencher o input de mês com o nome do mês atual
-	var meses = ["", "JANEIRO", "FEVEREIRO", "MARÇO", "ABRIL", "MAIO", "JUNHO", "JULHO", "AGOSTO", "SETEMBRO", "OUTUBRO", "NOVEMBRO", "DEZEMBRO"];
+	var meses = ["JANEIRO", "FEVEREIRO", "MARÇO", "ABRIL", "MAIO", "JUNHO", "JULHO", "AGOSTO", "SETEMBRO", "OUTUBRO", "NOVEMBRO", "DEZEMBRO"];
 	var mesAtual = meses[dataAtual.getMonth()];
 	document.getElementById('mes2').value = mesAtual;
 
@@ -161,7 +171,8 @@ function gerarPDFComissao() {
 	pdf.setFontSize(12);
 	pdf.setFontType("bold"); pdf.text(20, 50, 'RECEBI DE: '); pdf.setFontType("normal"); pdf.text(46, 50, loja);
 	pdf.setFontType("bold"); pdf.text(20, 58, 'CNPJ: '); pdf.setFontType("normal"); pdf.text(34, 58, cnpj);
-	pdf.setFontType("bold"); pdf.text(20, 66, 'A IMPORTÂNCIA DE: '); pdf.setFontType("normal"); pdf.text(64, 66, importancia.toUpperCase());
+	pdf.setFontType("bold"); pdf.text(20, 66, 'A IMPORTÂNCIA DE: '); pdf.setFontType("normal"); pdf.setFontSize(9); pdf.text(64, 66, importancia.toUpperCase());
+	pdf.setFontSize(12);
 	pdf.setFontType("bold"); pdf.text(20, 74, 'PERÍODO DE: '); pdf.setFontType("normal"); pdf.text(50, 74, mes2 + '/' + ano2);
 	pdf.setFontType("bold"); pdf.text(20, 82, 'REFERENTE A: '); pdf.setFontType("normal"); pdf.text(53, 82, referencia.toUpperCase());
 	pdf.setFontType("bold"); pdf.text(20, 90, 'OBSERVAÇÃO: '); pdf.setFontType("normal"); pdf.text(54, 90, obs.toUpperCase());
@@ -187,7 +198,8 @@ function gerarPDFComissao() {
 	pdf.setFontSize(12);
 	pdf.setFontType("bold"); pdf.text(20, 204, 'RECEBI DE: '); pdf.setFontType("normal"); pdf.text(46, 204, loja);
 	pdf.setFontType("bold"); pdf.text(20, 212, 'CNPJ: '); pdf.setFontType("normal"); pdf.text(34, 212, cnpj);
-	pdf.setFontType("bold"); pdf.text(20, 220, 'A IMPORTÂNCIA DE: '); pdf.setFontType("normal"); pdf.text(64, 220, importancia.toUpperCase());
+	pdf.setFontType("bold"); pdf.text(20, 220, 'A IMPORTÂNCIA DE: '); pdf.setFontType("normal"); pdf.setFontSize(9); pdf.text(64, 220, importancia.toUpperCase());
+	pdf.setFontSize(12);
 	pdf.setFontType("bold"); pdf.text(20, 228, 'PERÍODO DE: '); pdf.setFontType("normal"); pdf.text(50, 228, mes2 + '/' + ano2);
 	pdf.setFontType("bold"); pdf.text(20, 236, 'REFERENTE A: '); pdf.setFontType("normal"); pdf.text(53, 236, referencia.toUpperCase());
 	pdf.setFontType("bold"); pdf.text(20, 244, 'OBSERVAÇÃO: '); pdf.setFontType("normal"); pdf.text(54, 244, obs.toUpperCase());
@@ -209,6 +221,7 @@ function gerarPDFComissao() {
 	var nomePDF = 'Recibo_' + nome + '_ID' + ultimoId + '.pdf';
 
 	pdf.save(nomePDF);
+
 
 
 	var reciboData = {
