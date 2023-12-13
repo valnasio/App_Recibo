@@ -179,7 +179,7 @@ function gerarPDFComissao() {
 	pdf.setFontType("bold"); pdf.text(20, 105, 'DATA:___________________________');
 	pdf.setFontType("bold"); pdf.text(100, 105, 'LOCAL:___________________________');
 	pdf.setFontType("bold"); pdf.text(20, 113, 'NOME: '); pdf.setFontType("normal"); pdf.text(35, 113, nome.toUpperCase());
-	pdf.setFontType("bold"); pdf.text(20, 121, 'CPF: '); pdf.setFontType("normal"); pdf.text(32, 121, cpf.toUpperCase()); pdf.setFontType("bold"); pdf.text(70, 121, 'rg: '); pdf.setFontType("normal"); pdf.text(80, 121, rg.toUpperCase());
+	pdf.setFontType("bold"); pdf.text(20, 121, 'CPF: '); pdf.setFontType("normal"); pdf.text(32, 121, cpf.toUpperCase()); pdf.setFontType("bold"); pdf.text(70, 121, 'RG: '); pdf.setFontType("normal"); pdf.text(80, 121, rg.toUpperCase());
 	pdf.setFontType("bold"); pdf.text(20, 132, 'ASSINATURA:_________________________________________');
 
 	// 2º VIA DO RECIBO
