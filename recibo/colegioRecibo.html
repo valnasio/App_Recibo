@@ -186,6 +186,32 @@
             document.getElementById('gerar').addEventListener('click', gerarRecibo);
         });
     </script>
+
+
+
+    <!-- Bloqueio do Menu de Contexto e Atalhos do Teclado -->
+    <script>
+        document.addEventListener("contextmenu", function (e) {
+            e.preventDefault();
+        });
+
+        document.addEventListener("keydown", function (e) {
+            if (e.ctrlKey && (e.keyCode === 67 || e.keyCode === 86 || e.keyCode === 85 || e.keyCode === 123)) {
+                e.preventDefault();
+            }
+        });
+    </script>
+
+    <!-- Bloqueio do Botão Direito do Mouse -->
+    <script>
+        document.addEventListener("mousedown", function (e) {
+            if (e.button === 2) {
+                e.preventDefault();
+            }
+        });
+    </script>
+
+
 </body>
 
 </html>

@@ -1,39 +1,22 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const app = express();
-const PORT = 3000;
+const http = require('http');
+const fs = require('fs');
+const path = require('path');
 
-// Simulando um "banco de dados" de recibos
+const server = http.createServer((req, res) => {
+    const filePath = path.join(__dirname, req.url);
 
-
-// Middleware para analisar corpos de solicitações JSON
-app.use(bodyParser.json());
-
-// Rota para receber os dados XML
-app.post('/salvar-xml', (req, res) => {
-    const xmlData = req.body.xmlData;
-    // Aqui você pode fazer o que quiser com o xmlData, como salvar em um arquivo ou banco de dados
-    // ...
-
-    // Envie uma resposta simples
-    res.send('XML recebido com sucesso!');
+    fs.readFile(filePath, (err, data) => {
+        if (err) {
+            res.writeHead(404, { 'Content-Type': 'text/plain' });
+            res.end('Not Found');
+        } else {
+            res.writeHead(200, { 'Content-Type': 'text/html' });
+            res.end(data);
+        }
+    });
 });
 
-// Rota para obter dados do recibo com o ID fornecido
-app.get('/recibo/:id', (req, res) => {
-    const reciboId = req.params.id;
-
-    // Encontre o recibo com o ID correspondente
-    const recibo = recibos.find((r) => r.id === reciboId);
-
-    // Verifique se o recibo foi encontrado
-    if (recibo) {
-        res.json(recibo);
-    } else {
-        res.status(404).json({ mensagem: 'Recibo não encontrado' });
-    }
-});
-
-app.listen(PORT, () => {
-    console.log(`Servidor rodando na porta ${PORT}`);
+const PORT = 4242;
+server.listen(PORT, () => {
+    console.log(`Server running at http://localhost:${PORT}/`);
 });

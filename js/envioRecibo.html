@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Envio de Documentos</title>
+</head>
+
+<body>
+
+    <h1>Envio de Documentos</h1>
+
+    <form id="uploadForm" action="" method="post" enctype="multipart/form-data">
+        <label for="documento">Escolha um documento:</label>
+        <input type="file" name="documento" id="documento" accept=".pdf, .doc, .csv, .xml, .xls, .xlsx" required>
+        <br>
+
+        <input type="submit" value="Enviar Documento">
+    </form>
+
+    <?php
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['documento'])) {
+        // Verifica se o tamanho do arquivo é aceitável (5 MB)
+        if ($_FILES['documento']['size'] <= 5 * 1024 * 1024) {
+            // Verifica se o tipo de arquivo é permitido
+            $allowedTypes = array('application/pdf', 'application/msword', 'text/csv', 'application/xml', 'application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+            if (in_array($_FILES['documento']['type'], $allowedTypes)) {
+                // Configurações para conexão ao servidor
+                $server = "192.168.10.244";
+                $share = "arquivos";
+                $folder = "RECIBOS";
+
+                // Configura o caminho remoto no servidor
+                $remotePath = "\\$server\\$share\\$folder\\";
+
+                // Configura o caminho local do arquivo temporário
+                $localPath = $_FILES['documento']['tmp_name'];
+
+                // Configura o nome do arquivo no servidor
+                $remoteFile = $remotePath . $_FILES['documento']['name'];
+
+                // Move o arquivo para o servidor
+                if (copy($localPath, $remoteFile)) {
+                    echo "Upload bem-sucedido!";
+                } else {
+                    echo "Erro ao mover o arquivo para o servidor.";
+                }
+            } else {
+                echo "Tipo de arquivo não permitido.";
+            }
+        } else {
+            echo "O arquivo excede o tamanho máximo permitido de 5 MB.";
+        }
+    }
+    ?>
+
+
+
+</body>
+
+</html>

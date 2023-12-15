@@ -164,7 +164,7 @@ function gerarPDFComissao() {
 	pdf.setFontType("normal");
 	pdf.setFontSize(22);
 	pdf.text(20, 20, '                                 RECIBO');
-	pdf.text(20, 30, 'ID:' + ultimoId, pdf.setFontSize(12));
+	//pdf.text(20, 30, 'ID:' + ultimoId, pdf.setFontSize(12));
 	pdf.setTextColor(0);
 	pdf.setFontSize(18);
 	pdf.text(146, 30, 'Valor  R$ ' + valor);
@@ -191,7 +191,8 @@ function gerarPDFComissao() {
 	pdf.setFont("helvetica");
 	pdf.setFontType("normal");
 	pdf.setFontSize(22);
-	pdf.text(85, 174, 'RECIBO'); pdf.text(20, 184, 'ID:' + ultimoId, pdf.setFontSize(12));
+	pdf.text(85, 174, 'RECIBO');
+	//pdf.text(20, 184, 'ID:' + ultimoId, pdf.setFontSize(12));
 	pdf.setTextColor(0); //isso deve ser preto
 	pdf.setFontSize(18);
 	pdf.text(146, 184, 'Valor  R$ ' + valor);
@@ -290,15 +291,31 @@ function gerarESalvarXML(dados) {
 
 function gerarRecibo() {
 	var dados = {
-		id: ultimoId,
 		nome: document.getElementById('nome').value,
+		data: new Date(), // Puxe a data atual
+		referente: document.getElementById('referente').value,
+		cpf: document.getElementById('cpf').value,
+		rg: document.getElementById('rg').value,
+		valor: parseFloat(document.getElementById('valor').value)
 		// Adicione outros campos conforme necessário
 	};
 
-	gerarESalvarXML(dados);
-
-	ultimoId++;
-
+	fetch('http://localhost:3000/DbApp', {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json',
+		},
+		body: JSON.stringify(dados),
+	})
+		.then(response => response.json())
+		.then(data => {
+			console.log(data);
+			alert('Recibo gerado com sucesso!');
+		})
+		.catch(error => {
+			console.error(error);
+			alert('Erro ao gerar recibo.');
+		});
 }
 
 document.getElementById('gerar').addEventListener('click', gerarRecibo);
