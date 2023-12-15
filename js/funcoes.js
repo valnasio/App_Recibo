@@ -1,11 +1,14 @@
 var ultimoId = 0;
-//---------DATA--------------------------------
 
+
+
+
+//---------DATA--------------------------------
 
 function Data() {
 	var data = new Date();
 	var dias = ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"];
-	var meses = ["", "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
+	var meses = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
 
 	document.write(dias[data.getDay()] + ", " + data.getDate() + " de " + meses[data.getMonth()] + " de " + data.getFullYear());
 }
@@ -102,23 +105,21 @@ function converteValorParaPalavras(valor) {
 	return resultado;
 }
 
-
-
-
 //---------RECIBO COMISSÃO--------------------------------
 
 function getDadosComissao() {
 	var dataAtual = new Date();
 
 	// Preencher o input de mês com o nome do mês atual
-	var meses = ["JANEIRO", "FEVEREIRO", "MARÇO", "ABRIL", "MAIO", "JUNHO", "JULHO", "AGOSTO", "SETEMBRO", "OUTUBRO", "NOVEMBRO", "DEZEMBRO"];
+	var meses = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
 	var mesAtual = meses[dataAtual.getMonth()];
-	document.getElementById('mes2').value = mesAtual;
+	console.log('Mês Atual:', mesAtual);
 
 	// Preencher o input de ano com o ano atual
-	var anoAtual = dataAtual.getFullYear();
-	document.getElementById('ano2').value = anoAtual
-	document.getElementById('gerar').onclick = gerarPDFComissao;
+	document.getElementById('ano2').value = dataAtual.getFullYear();
+
+	// Preencher o input de dia com o dia do mês atual
+	document.getElementById('dia2').value = dataAtual.getDate();
 }
 
 function gerarPDFComissao() {
@@ -134,10 +135,11 @@ function gerarPDFComissao() {
 	var rg = document.getElementById('rg').value;
 	var cpf = document.getElementById('cpf').value;
 
-
 	if (valor == "" || importancia == "" || nome == "" || referencia == "") {
 		alert('Preencha todos os campos do Formulário.');
-		valor.focus();
+		setTimeout(function () {
+			document.getElementById('valor').focus();
+		}, 100); // Aguarda 100 milissegundos antes de focar
 		return false;
 	} else {
 		alert('Vão ser geradas duas vias do Recibo de Comissão em PDF do funcionário(a) ' + nome + '.\nClique em OK para finalizar.');
@@ -180,14 +182,14 @@ function gerarPDFComissao() {
 	pdf.setFontType("bold"); pdf.text(100, 105, 'LOCAL:___________________________');
 	pdf.setFontType("bold"); pdf.text(20, 113, 'NOME: '); pdf.setFontType("normal"); pdf.text(35, 113, nome.toUpperCase());
 	pdf.setFontType("bold"); pdf.text(20, 121, 'CPF: '); pdf.setFontType("normal"); pdf.text(32, 121, cpf.toUpperCase()); pdf.setFontType("bold"); pdf.text(70, 121, 'RG: '); pdf.setFontType("normal"); pdf.text(80, 121, rg.toUpperCase());
-	pdf.setFontType("bold"); pdf.text(20, 132, 'ASSINATURA:_________________________________________');
+	pdf.setFontType("bold"); pdf.text(20, 132, 'ASSINATURA:_____________________________________________________');
 
-	// 2º VIA DO RECIBO
+	/* 2º VIA DO RECIBO
 	pdf.line(10, 163, 200, 163); //linha horizontal superior
 	pdf.line(10, 163, 10, 288) //linha vertical esquerda
 	pdf.line(10, 288, 200, 288); //linha horizontal inferior
 	pdf.line(200, 288, 200, 163) //linha vertical direita
-
+	
 	pdf.setFont("helvetica");
 	pdf.setFontType("normal");
 	pdf.setFontSize(22);
@@ -204,12 +206,12 @@ function gerarPDFComissao() {
 	pdf.setFontType("bold"); pdf.text(20, 228, 'PERÍODO DE: '); pdf.setFontType("normal"); pdf.text(50, 228, mes2 + '/' + ano2);
 	pdf.setFontType("bold"); pdf.text(20, 236, 'REFERENTE A: '); pdf.setFontType("normal"); pdf.text(53, 236, referencia.toUpperCase());
 	pdf.setFontType("bold"); pdf.text(20, 244, 'OBSERVAÇÃO: '); pdf.setFontType("normal"); pdf.text(54, 244, obs.toUpperCase());
-
+	
 	pdf.setFontType("bold"); pdf.text(20, 260, 'DATA:___________________________'); pdf.setFontType("bold"); pdf.text(100, 260, 'LOCAL:___________________________');
 	pdf.setFontType("bold"); pdf.text(20, 268, 'NOME: '); pdf.setFontType("normal"); pdf.text(35, 268, nome.toUpperCase());
 	pdf.setFontType("bold"); pdf.text(20, 276, 'CPF: '); pdf.setFontType("normal"); pdf.text(32, 276, cpf.toUpperCase()); pdf.setFontType("bold"); pdf.text(70, 276, 'RG: '); pdf.setFontType("normal"); pdf.text(80, 276, rg.toUpperCase());
 	pdf.setFontType("bold"); pdf.text(20, 285, 'ASSINATURA:__________________________________');
-
+*/
 
 	// Incrementar o último ID
 	ultimoId++;
@@ -355,7 +357,7 @@ function adicionarDadosAoXML(dados) {
 	localStorage.setItem('dados_recibos_xml', xmlString);
 }
 
-function exibirDadosDoXML() {
+/*function exibirDadosDoXML() {
 	var xmlString = localStorage.getItem('dados_recibos_xml');
 	var xmlDoc = new DOMParser().parseFromString(xmlString, 'text/xml');
 
@@ -372,4 +374,4 @@ function exibirDadosDoXML() {
 
 		console.log('ID: ' + (i + 1), dados);
 	}
-}
+}*/

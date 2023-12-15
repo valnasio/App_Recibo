@@ -17,6 +17,15 @@
     <script type="text/javascript" src="../js/funcoes.js"></script>
     <script type="text/javascript" src="../js/jspdf.min.js"></script>
     <script type="text/javascript" src="../js/funcoes.js">gerarPDFComissao()</script>
+    <script>
+        function formatar(mascara, documento) {
+            var i = documento.value.length;
+            var saida = mascara.substring(i)
+            if (texto.substring(0, 1) != saida) {
+                documento.value += texto.substring(0, 1);
+            }
+        }
+    </script>
 
 
 
@@ -58,8 +67,12 @@
 
             </div>
             <b style="color:white;">
-                <script>Data()</script>
+                <script>
+                    var dataAtual = new Date();
+                    document.write(dataAtual.toLocaleString('pt-BR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' }));
+                </script>
             </b>
+
         </div>
 
     </nav>
@@ -92,43 +105,56 @@
 
                     <h6><b>DATA</b></h6>
 
-                    <div class="row justify-content-between text-left">
-                        <div class="form-group col-sm-6 flex-column d-flex"><label
-                                class="form-control-label px-3"><b>MÊS</b><select class="form-select" id="mes2">
-                                    <option value=" "></option>
-                                    <option value="JANEIRO">JANEIRO</option>
-                                    <option value="FEVEREIRO">FEVEREIRO</option>
-                                    <option value="MARÇO">MARÇO</option>
-                                    <option value="ABRIL">ABRIL</option>
-                                    <option value="MAIO">MAIO</option>
-                                    <option value="JUNHO">JUNHO</option>
-                                    <option value="JULHO">JULHO</option>
-                                    <option value="AGOSTO">AGOSTO</option>
-                                    <option value="SETEMBRO">SETEMBRO</option>
-                                    <option value="OUTUBRO">OUTUBRO</option>
-                                    <option value="NOVEMBRO">NOVEMBRO</option>
-                                    <option value="DEZEMBRO">DEZEMBRO</option>
 
-                                </select>
+                    <div class="row justify-content-between text-left">
+                        <div class="form-group col-sm-4 flex-column d-flex">
+                            <label class="form-control-label px-3"><b>MÊS</b></label>
+                            <select class="form-select" id="mes2">
+                                <option value="JANEIRO">JANEIRO</option>
+                                <option value="FEVEREIRO">FEVEREIRO</option>
+                                <option value="MARÇO">MARÇO</option>
+                                <option value="ABRIL">ABRIL</option>
+                                <option value="MAIO">MAIO</option>
+                                <option value="JUNHO">JUNHO</option>
+                                <option value="JULHO">JULHO</option>
+                                <option value="AGOSTO">AGOSTO</option>
+                                <option value="SETEMBRO">SETEMBRO</option>
+                                <option value="OUTUBRO">OUTUBRO</option>
+                                <option value="NOVEMBRO">NOVEMBRO</option>
+                                <option value="DEZEMBRO">DEZEMBRO</option>
+
+
+
+
+
+
+
+
+                            </select>
                         </div>
 
-                        <div class="form-group col-sm-6 flex-column d-flex"><label
-                                class="form-control-label px-3"><b>ANO</b><select class="form-select" id="ano2">
-                                    <option value="2023">2023</option>
-                                    <option value="2024">2024</option>
-                                    <option value="2025">2025</option>
-                                    <option value="2026">2026</option>
-                                    <option value="2027">2027</option>
+                        <div class="form-group col-sm-4 flex-column d-flex">
+                            <label class="form-control-label px-3"><b>ANO</b></label>
+                            <select class="form-select" id="ano2">
+                                <option value="2023">2023</option>
+                                <option value="2024">2024</option>
+                                <option value="2025">2025</option>
+                                <option value="2026">2026</option>
+                                <option value="2027">2027</option>
+                            </select>
+                        </div>
 
-                                </select>
+                        <div class="form-group col-sm-4 flex-column d-flex">
+                            <label class="form-control-label px-3"><b>DIA</b></label>
+                            <input placeholder="00" id="dia2" type="number" min="1" max="31">
                         </div>
                     </div>
 
                     <h6><b>ASSUNTO</b></h6>
                     <div class="row justify-content-between text-left">
                         <div class="form-group col-sm-12 flex-column d-flex">
-                            <label class="form-control-label px-3"><b>REFERENTE</b></span></label> <input placeholder=""
-                                id="referencia" type="text">
+                            <label class="form-control-label px-3"><b>REFERENTE</b></span></label>
+                            <input placeholder="" id="referencia" type="text">
                         </div>
 
                     </div>
@@ -146,19 +172,21 @@
 
                         <div class="form-group col-sm-6 flex-column d-flex"> <label
                                 class="form-control-label px-3"><b>CPF</b></span></label> <input
-                                style="text-transform: uppercase;" id="cpf" type="TEXT" placeholder="NÚMERO DO CPF">
+                                style="text-transform: uppercase;" id="cpf" type="number"
+                                OnKeyPress="formatar('###-###-###.##',this)" placeholder="NÚMERO DO CPF">
                         </div>
 
                         <div class="form-group col-sm-6 flex-column d-flex"> <label
                                 class="form-control-label px-3"><b>RG</b></span></label> <input
-                                style="text-transform: uppercase;" id="rg" type="TEXT" placeholder="NÚMERO DO RG">
+                                style="text-transform: uppercase;" id="rg" type="number" placeholder="NÚMERO DO RG">
                         </div>
 
 
                         <div class="form-group col-sm-6 flex-column d-flex"> <label
-                                class="form-control-label px-3"><b>OBSERVAÇÃO</b></span></label> <textarea
-                                maxlength="60" style="height: 5em;width: 60em;text-transform: uppercase" id="obs"
-                                type="text" placeholder="ESCREVA A OBSERVAÇÃO SE HOUVER"></textarea> </div>
+                                class="form-control-label px-3"><b>OBSERVAÇÃO</b></span></label>
+                            <textarea maxlength="60" style="height: 5em;width: 60em;text-transform: uppercase" id="obs"
+                                type="text" placeholder="ESCREVA A OBSERVAÇÃO SE HOUVER"></textarea>
+                        </div>
                     </div>
 
                     <div class="row justify-content-center">

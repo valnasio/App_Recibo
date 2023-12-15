@@ -3,22 +3,34 @@
 }
 
 body {
-  background-image: url(/bgUnef.png);
+  background: linear-gradient(98deg, rgba(255, 181, 35, 1) 4%, rgba(255, 244, 54, 1) 82%);
   color: #fff;
-  background-size: 100%;
+  background-size: cover;
+  /* Alterado para 'cover' para cobrir toda a tela */
   background-repeat: no-repeat;
-  background-position: auto;
-  max-height: 50vh;
-  height: 50vh;
+  background-position: center;
+  max-height: 100vh;
+  height: 100vh;
 }
 
-@media (max-width: 1180px) {
+@media (max-width: 800px) {
   body {
-    background-size: auto;
+    max-width: 100%;
+    max-height: 100vh;
+    background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
   }
 }
+
+@media (max-width: 400px) {
+  body {
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+}
+
 
 .card {
   color: #190B07;
@@ -127,6 +139,5 @@ footer {
   line-height: 2vh;
   position: fixed;
   bottom: 0;
-  opacity: .8;
-  background-color: #303030;
+  background-color: #000000;
 }

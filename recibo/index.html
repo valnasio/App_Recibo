@@ -57,8 +57,12 @@
 
 			</div>
 			<b style="color:white;">
-				<script>Data()</script>
+				<script>
+					var dataAtual = new Date();
+					document.write(dataAtual.toLocaleString('pt-BR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', }));
+				</script>
 			</b>
+
 		</div>
 
 	</nav>
@@ -91,35 +95,48 @@
 
 					<h6><b>DATA</b></h6>
 
+
 					<div class="row justify-content-between text-left">
-						<div class="form-group col-sm-6 flex-column d-flex"><label
-								class="form-control-label px-3"><b>MÊS</b><select class="form-select" id="mes2">
-									<option value="JANEIRO">JANEIRO</option>
-									<option value="FEVEREIRO">FEVEREIRO</option>
-									<option value="MARÇO">MARÇO</option>
-									<option value="ABRIL">ABRIL</option>
-									<option value="MAIO">MAIO</option>
-									<option value="JUNHO">JUNHO</option>
-									<option value="JULHO">JULHO</option>
-									<option value="AGOSTO">AGOSTO</option>
-									<option value="SETEMBRO">SETEMBRO</option>
-									<option value="OUTUBRO">OUTUBRO</option>
-									<option value="NOVEMBRO">NOVEMBRO</option>
-									<option value="DEZEMBRO">DEZEMBRO</option>
+						<div class="form-group col-sm-4 flex-column d-flex">
+							<label class="form-control-label px-3"><b>MÊS</b></label>
+							<select class="form-select" id="mes2">
+								<option value="JANEIRO">JANEIRO</option>
+								<option value="FEVEREIRO">FEVEREIRO</option>
+								<option value="MARÇO">MARÇO</option>
+								<option value="ABRIL">ABRIL</option>
+								<option value="MAIO">MAIO</option>
+								<option value="JUNHO">JUNHO</option>
+								<option value="JULHO">JULHO</option>
+								<option value="AGOSTO">AGOSTO</option>
+								<option value="SETEMBRO">SETEMBRO</option>
+								<option value="OUTUBRO">OUTUBRO</option>
+								<option value="NOVEMBRO">NOVEMBRO</option>
+								<option value="DEZEMBRO">DEZEMBRO</option>
 
 
-								</select>
+
+
+
+
+
+
+							</select>
 						</div>
 
-						<div class="form-group col-sm-6 flex-column d-flex"><label
-								class="form-control-label px-3"><b>ANO</b><select class="form-select" id="ano2">
-									<option value="2023">2023</option>
-									<option value="2024">2024</option>
-									<option value="2025">2025</option>
-									<option value="2026">2026</option>
-									<option value="2027">2027</option>
+						<div class="form-group col-sm-4 flex-column d-flex">
+							<label class="form-control-label px-3"><b>ANO</b></label>
+							<select class="form-select" id="ano2">
+								<option value="2023">2023</option>
+								<option value="2024">2024</option>
+								<option value="2025">2025</option>
+								<option value="2026">2026</option>
+								<option value="2027">2027</option>
+							</select>
+						</div>
 
-								</select>
+						<div class="form-group col-sm-4 flex-column d-flex">
+							<label class="form-control-label px-3"><b>DIA</b></label>
+							<input placeholder="00" id="dia2" type="number" min="1" max="31">
 						</div>
 					</div>
 
@@ -157,7 +174,8 @@
 						<div class="form-group col-sm-6 flex-column d-flex"> <label
 								class="form-control-label px-3"><b>OBSERVAÇÃO</b></span></label> <textarea
 								maxlength="60" style="height: 5em;width: 60em;text-transform: uppercase" id="obs"
-								type="text" placeholder="ESCREVA A OBSERVAÇÃO SE HOUVER"></textarea> </div>
+								type="text" placeholder="ESCREVA A OBSERVAÇÃO SE HOUVER"></textarea>
+						</div>
 					</div>
 
 					<div class="row justify-content-center">
@@ -170,11 +188,11 @@
 		</div>
 	</div>
 
-	<footer class="text-center text-white " style="background-color: #21081a; opacity: 0.9;">
+	<footer class="text-center text-white ">
 
 
 		<!-- Copyright -->
-		<div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
+		<div class="text-center p-3">
 			© 2023 UNEF
 
 		</div>
