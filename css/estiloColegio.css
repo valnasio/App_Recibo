@@ -3,7 +3,8 @@
 }
 
 body {
-    background-image: url(/bgColegio.png);
+    background: linear-gradient(98deg, rgba(35, 111, 255, 1) 4%, rgba(54, 171, 255, 1) 82%);
+    ;
     color: #fff;
     background-size: 100%;
     background-repeat: no-repeat;

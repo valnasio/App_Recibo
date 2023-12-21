@@ -3,7 +3,8 @@
 }
 
 body {
-    background-image: url(/bgUnifan.png);
+    background: linear-gradient(98deg, rgba(35, 48, 255, 1) 4%, rgba(38, 161, 238, 1) 28%, rgba(52, 237, 156, 1) 66%, rgba(30, 235, 62, 1) 91%);
+    ;
     color: #fff;
     background-size: 100%;
     background-repeat: no-repeat;
