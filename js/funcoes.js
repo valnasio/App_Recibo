@@ -1,14 +1,11 @@
 var ultimoId = 0;
-
-
-
-
 //---------DATA--------------------------------
+
 
 function Data() {
 	var data = new Date();
-	var dias = ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"];
-	var meses = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
+	var dias = ["Domingo", "Segunda", "TerÃ§a", "Quarta", "Quinta", "Sexta", "SÃ¡bado"];
+	var meses = ["", "Janeiro", "Fevereiro", "MarÃ§o", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
 
 	document.write(dias[data.getDay()] + ", " + data.getDate() + " de " + meses[data.getMonth()] + " de " + data.getFullYear());
 }
@@ -27,7 +24,7 @@ function converteNumeroPorExtenso(numero) {
 	var dezenasMultiplos = ['VINTE', 'TRINTA', 'QUARENTA', 'CINQUENTA', 'SESSENTA', 'SETENTA', 'OITENTA', 'NOVENTA'];
 	var centenas = ['', 'CENTO', 'DUZENTOS', 'TREZENTOS', 'QUATROCENTOS', 'QUINHENTOS', 'SEISCENTOS', 'SETECENTOS', 'OITOCENTOS', 'NOVECENTOS'];
 
-	var milhares = ['', ' MIL', ' MIL', ' MILHÃO', ' MILHÕES'];
+	var milhares = ['', ' MIL', ' MIL', ' MILHÃƒO', ' MILHÃ•ES'];
 
 	var valorEmPalavras = '';
 
@@ -88,7 +85,7 @@ function converteValorParaPalavras(valor) {
 	var valorInteiroEmPalavras = converteNumeroPorExtenso(valorInteiro);
 	var valorDecimalEmPalavras = '';
 
-	// Verifica se há centavos
+	// Verifica se hÃ¡ centavos
 	if (valorDecimal > 0) {
 		valorDecimalEmPalavras = 'E ' + converteNumeroPorExtenso(valorDecimal) + ' CENTAVOS';
 	}
@@ -105,21 +102,23 @@ function converteValorParaPalavras(valor) {
 	return resultado;
 }
 
-//---------RECIBO COMISSÃO--------------------------------
+
+
+
+//---------RECIBO COMISSÃƒO--------------------------------
 
 function getDadosComissao() {
 	var dataAtual = new Date();
 
-	// Preencher o input de mês com o nome do mês atual
-	var meses = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
+	// Preencher o input de mÃªs com o nome do mÃªs atual
+	var meses = ["JANEIRO", "FEVEREIRO", "MARÃ‡O", "ABRIL", "MAIO", "JUNHO", "JULHO", "AGOSTO", "SETEMBRO", "OUTUBRO", "NOVEMBRO", "DEZEMBRO"];
 	var mesAtual = meses[dataAtual.getMonth()];
-	console.log('Mês Atual:', mesAtual);
+	document.getElementById('mes2').value = mesAtual;
 
 	// Preencher o input de ano com o ano atual
-	document.getElementById('ano2').value = dataAtual.getFullYear();
-
-	// Preencher o input de dia com o dia do mês atual
-	document.getElementById('dia2').value = dataAtual.getDate();
+	var anoAtual = dataAtual.getFullYear();
+	document.getElementById('ano2').value = anoAtual
+	document.getElementById('gerar').onclick = gerarPDFComissao;
 }
 
 function gerarPDFComissao() {
@@ -134,12 +133,11 @@ function gerarPDFComissao() {
 	var nome = document.getElementById('nome').value;
 	var rg = document.getElementById('rg').value;
 	var cpf = document.getElementById('cpf').value;
+	var dia2 = document.getElementById('dia2').value;
 
 	if (valor == "" || importancia == "" || nome == "" || referencia == "") {
 		alert('Preencha todos os campos do Formulário.');
-		setTimeout(function () {
-			document.getElementById('valor').focus();
-		}, 100); // Aguarda 100 milissegundos antes de focar
+		valor.focus();
 		return false;
 	} else {
 		alert('Vão ser geradas duas vias do Recibo de Comissão em PDF do funcionário(a) ' + nome + '.\nClique em OK para finalizar.');
@@ -156,62 +154,149 @@ function gerarPDFComissao() {
 		keywords: 'gerador de recibos pessoal',
 		creator: 'gPDF, javascript, web 2.0, ajax'
 	});
+
+	// Configurar a largura máxima para o texto antes de quebrar
+	var larguraMaxima = 140;
+
 	// 1º VIA DO RECIBO
-	pdf.line(10, 10, 200, 10); //linha horizontal superior
-	pdf.line(10, 135, 10, 10) //linha vertical esquerda
-	pdf.line(10, 135, 200, 135); //linha horizontal inferior
-	pdf.line(200, 135, 200, 10) //linha vertical direita
+	pdf.line(10, 10, 200, 10); // linha horizontal superior
+	pdf.line(10, 135, 10, 10) // linha vertical esquerda
+	pdf.line(10, 135, 200, 135); // linha horizontal inferior
+	pdf.line(200, 135, 200, 10) // linha vertical direita
 
 	pdf.setFont("helvetica");
 	pdf.setFontType("normal");
 	pdf.setFontSize(22);
-	pdf.text(20, 20, '                                 RECIBO');
-	//pdf.text(20, 30, 'ID:' + ultimoId, pdf.setFontSize(12));
+	pdf.setFontType("bold");
+	pdf.text(20, 20, 'RECIBO');
+	pdf.setFontType("normal");
 	pdf.setTextColor(0);
 	pdf.setFontSize(18);
-	pdf.text(146, 30, 'Valor  R$ ' + valor);
+	pdf.text(146, 20, 'R$: ' + valor);
 	pdf.setFontSize(12);
-	pdf.setFontType("bold"); pdf.text(20, 50, 'RECEBI DE: '); pdf.setFontType("normal"); pdf.text(46, 50, loja);
-	pdf.setFontType("bold"); pdf.text(20, 58, 'CNPJ: '); pdf.setFontType("normal"); pdf.text(34, 58, cnpj);
-	pdf.setFontType("bold"); pdf.text(20, 66, 'A IMPORTÂNCIA DE: '); pdf.setFontType("normal"); pdf.setFontSize(9); pdf.text(64, 66, importancia.toUpperCase());
+	pdf.setFontType("bold");
+	pdf.text(20, 40, 'RECEBI DE: ');
+	pdf.setFontType("normal");
+	pdf.text(46, 40, loja);
+	pdf.setFontType("bold");
+	pdf.text(20, 48, 'CNPJ: ');
+	pdf.setFontType("normal");
+	pdf.text(34, 48, cnpj);
+	pdf.setFontType("bold");
+	pdf.text(20, 56, 'A IMPORTÂNCIA DE: ');
+	pdf.setFontType("normal");
+	pdf.setFontSize(9);
+	pdf.text(64, 56, importancia.toUpperCase());
 	pdf.setFontSize(12);
-	pdf.setFontType("bold"); pdf.text(20, 74, 'PERÍODO DE: '); pdf.setFontType("normal"); pdf.text(50, 74, mes2 + '/' + ano2);
-	pdf.setFontType("bold"); pdf.text(20, 82, 'REFERENTE A: '); pdf.setFontType("normal"); pdf.text(53, 82, referencia.toUpperCase());
-	pdf.setFontType("bold"); pdf.text(20, 90, 'OBSERVAÇÃO: '); pdf.setFontType("normal"); pdf.text(54, 90, obs.toUpperCase());
-	pdf.setFontType("bold"); pdf.text(20, 105, 'DATA:___________________________');
-	pdf.setFontType("bold"); pdf.text(100, 105, 'LOCAL:___________________________');
-	pdf.setFontType("bold"); pdf.text(20, 113, 'NOME: '); pdf.setFontType("normal"); pdf.text(35, 113, nome.toUpperCase());
-	pdf.setFontType("bold"); pdf.text(20, 121, 'CPF: '); pdf.setFontType("normal"); pdf.text(32, 121, cpf.toUpperCase()); pdf.setFontType("bold"); pdf.text(70, 121, 'RG: '); pdf.setFontType("normal"); pdf.text(80, 121, rg.toUpperCase());
-	pdf.setFontType("bold"); pdf.text(20, 132, 'ASSINATURA:_____________________________________________________');
+	pdf.setFontType("bold");
+	pdf.text(20, 64, 'PERÍODO DE: ');
+	pdf.setFontType("normal");
+	pdf.text(50, 64, dia2 + ' de ' + mes2 + ' de ' + ano2);
+
+	// Usar a função splitTextToSize para quebrar o texto em várias linhas
+	pdf.setFontType("bold");
+	pdf.text(20, 72, 'REFERENTE A: ');
+	pdf.setFontType("normal");
+	var linhasReferente = pdf.splitTextToSize(referencia.toUpperCase(), larguraMaxima);
+	for (var i = 0; i < linhasReferente.length; i++) {
+		pdf.text(53, 72 + (i * 4), linhasReferente[i]);
+	}
+
+	pdf.setFontType("bold");
+	pdf.text(20, 85, 'OBSERVAÇÃO: ');
+	pdf.setFontType("normal");
+	var linhasObservacao = pdf.splitTextToSize(obs.toUpperCase(), larguraMaxima);
+	for (var i = 0; i < linhasObservacao.length; i++) {
+		pdf.text(54, 85 + (i * 8), linhasObservacao[i]);
+	}
+
+	pdf.setFontType("bold");
+	pdf.text(20, 96, 'DATA:___________________________');
+	pdf.setFontType("bold");
+	pdf.text(100, 96, 'LOCAL:___________________________');
+	pdf.setFontType("bold");
+	pdf.text(20, 104, 'NOME: ');
+	pdf.setFontType("normal");
+	pdf.text(35, 104, nome.toUpperCase());
+	pdf.setFontType("bold");
+	pdf.text(20, 112, 'CPF: ');
+	pdf.setFontType("normal");
+	pdf.text(32, 112, cpf.toUpperCase());
+	pdf.setFontType("bold");
+	pdf.text(70, 112, 'RG: ');
+	pdf.setFontType("normal");
+	pdf.text(80, 112, rg.toUpperCase());
+	pdf.setFontType("bold");
+	pdf.text(20, 130, 'ASSINATURA:_____________________________________________________________');
 
 	/* 2º VIA DO RECIBO
-	pdf.line(10, 163, 200, 163); //linha horizontal superior
-	pdf.line(10, 163, 10, 288) //linha vertical esquerda
-	pdf.line(10, 288, 200, 288); //linha horizontal inferior
-	pdf.line(200, 288, 200, 163) //linha vertical direita
-	
+	pdf.line(10, 163, 200, 163); // linha horizontal superior
+	pdf.line(10, 163, 10, 288) // linha vertical esquerda
+	pdf.line(10, 288, 200, 288); // linha horizontal inferior
+	pdf.line(200, 288, 200, 163) // linha vertical direita
+
 	pdf.setFont("helvetica");
 	pdf.setFontType("normal");
 	pdf.setFontSize(22);
 	pdf.text(85, 174, 'RECIBO');
-	//pdf.text(20, 184, 'ID:' + ultimoId, pdf.setFontSize(12));
-	pdf.setTextColor(0); //isso deve ser preto
+	pdf.setTextColor(0);
 	pdf.setFontSize(18);
 	pdf.text(146, 184, 'Valor  R$ ' + valor);
 	pdf.setFontSize(12);
-	pdf.setFontType("bold"); pdf.text(20, 204, 'RECEBI DE: '); pdf.setFontType("normal"); pdf.text(46, 204, loja);
-	pdf.setFontType("bold"); pdf.text(20, 212, 'CNPJ: '); pdf.setFontType("normal"); pdf.text(34, 212, cnpj);
-	pdf.setFontType("bold"); pdf.text(20, 220, 'A IMPORTÂNCIA DE: '); pdf.setFontType("normal"); pdf.setFontSize(9); pdf.text(64, 220, importancia.toUpperCase());
+	pdf.setFontType("bold");
+	pdf.text(20, 204, 'RECEBI DE: ');
+	pdf.setFontType("normal");
+	pdf.text(46, 204, loja);
+	pdf.setFontType("bold");
+	pdf.text(20, 212, 'CNPJ: ');
+	pdf.setFontType("normal");
+	pdf.text(34, 212, cnpj);
+	pdf.setFontType("bold");
+	pdf.text(20, 220, 'A IMPORTÂNCIA DE: ');
+	pdf.setFontType("normal");
+	pdf.setFontSize(9);
+	pdf.text(64, 220, importancia.toUpperCase());
 	pdf.setFontSize(12);
-	pdf.setFontType("bold"); pdf.text(20, 228, 'PERÍODO DE: '); pdf.setFontType("normal"); pdf.text(50, 228, mes2 + '/' + ano2);
-	pdf.setFontType("bold"); pdf.text(20, 236, 'REFERENTE A: '); pdf.setFontType("normal"); pdf.text(53, 236, referencia.toUpperCase());
-	pdf.setFontType("bold"); pdf.text(20, 244, 'OBSERVAÇÃO: '); pdf.setFontType("normal"); pdf.text(54, 244, obs.toUpperCase());
-	
-	pdf.setFontType("bold"); pdf.text(20, 260, 'DATA:___________________________'); pdf.setFontType("bold"); pdf.text(100, 260, 'LOCAL:___________________________');
-	pdf.setFontType("bold"); pdf.text(20, 268, 'NOME: '); pdf.setFontType("normal"); pdf.text(35, 268, nome.toUpperCase());
-	pdf.setFontType("bold"); pdf.text(20, 276, 'CPF: '); pdf.setFontType("normal"); pdf.text(32, 276, cpf.toUpperCase()); pdf.setFontType("bold"); pdf.text(70, 276, 'RG: '); pdf.setFontType("normal"); pdf.text(80, 276, rg.toUpperCase());
-	pdf.setFontType("bold"); pdf.text(20, 285, 'ASSINATURA:__________________________________');
-*/
+	pdf.setFontType("bold");
+	pdf.text(20, 228, 'PERÍODO DE: ');
+	pdf.setFontType("normal");
+	pdf.text(50, 228, mes2 + '/' + ano2);
+
+	// Usar a função splitTextToSize para quebrar o texto em várias linhas
+	pdf.setFontType("bold");
+	pdf.text(20, 236, 'REFERENTE A: ');
+	pdf.setFontType("normal");
+	var linhasReferente2 = pdf.splitTextToSize(referencia.toUpperCase(), larguraMaxima);
+	for (var i = 0; i < linhasReferente2.length; i++) {
+		pdf.text(53, 236 + (i * 8), linhasReferente2[i]);
+	}
+
+	pdf.setFontType("bold");
+	pdf.text(20, 244, 'OBSERVAÇÃO: ');
+	pdf.setFontType("normal");
+	var linhasObservacao2 = pdf.splitTextToSize(obs.toUpperCase(), larguraMaxima);
+	for (var i = 0; i < linhasObservacao2.length; i++) {
+		pdf.text(54, 244 + (i * 8), linhasObservacao2[i]);
+	}
+
+	pdf.setFontType("bold");
+	pdf.text(20, 260, 'DATA:___________________________');
+	pdf.setFontType("bold");
+	pdf.text(100, 260, 'LOCAL:___________________________');
+	pdf.setFontType("bold");
+	pdf.text(20, 268, 'NOME: ');
+	pdf.setFontType("normal");
+	pdf.text(35, 268, nome.toUpperCase());
+	pdf.setFontType("bold");
+	pdf.text(20, 276, 'CPF: ');
+	pdf.setFontType("normal");
+	pdf.text(32, 276, cpf.toUpperCase());
+	pdf.setFontType("bold");
+	pdf.text(70, 276, 'RG: ');
+	pdf.setFontType("normal");
+	pdf.text(80, 276, rg.toUpperCase());
+	pdf.setFontType("bold");
+	pdf.text(20, 285, 'ASSINATURA:__________________________________');*/
 
 	// Incrementar o último ID
 	ultimoId++;
@@ -225,8 +310,6 @@ function gerarPDFComissao() {
 
 	pdf.save(nomePDF);
 
-
-
 	var reciboData = {
 		nome: nome,
 		data: new Date().toLocaleDateString(),
@@ -237,14 +320,14 @@ function gerarPDFComissao() {
 
 	gerarESalvarXML(reciboData);
 
-
-
 	window.location.reload();
 }
 
+
+
 function construirXML(dados) {
-	// Implemente a lógica para construir a string XML com base nos dados fornecidos
-	// Aqui está um exemplo simples:
+	// Implemente a lÃ³gica para construir a string XML com base nos dados fornecidos
+	// Aqui estÃ¡ um exemplo simples:
 	const xmlString = `<recibo><id>${dados.id}</id><nome>${dados.nome}</nome></recibo>`;
 	return xmlString;
 }
@@ -299,7 +382,7 @@ function gerarRecibo() {
 		cpf: document.getElementById('cpf').value,
 		rg: document.getElementById('rg').value,
 		valor: parseFloat(document.getElementById('valor').value)
-		// Adicione outros campos conforme necessário
+		// Adicione outros campos conforme necessÃ¡rio
 	};
 
 	fetch('http://localhost:3000/DbApp', {
@@ -331,7 +414,7 @@ function adicionarDadosAoXML(dados) {
 	var xmlDoc;
 
 	if (!xmlString) {
-		// Se o arquivo XML não existir, crie um novo
+		// Se o arquivo XML nÃ£o existir, crie um novo
 		xmlString = '<?xml version="1.0" encoding="UTF-8"?><recibos></recibos>';
 		localStorage.setItem('dados_recibos_xml', xmlString);
 	}
@@ -357,7 +440,7 @@ function adicionarDadosAoXML(dados) {
 	localStorage.setItem('dados_recibos_xml', xmlString);
 }
 
-/*function exibirDadosDoXML() {
+function exibirDadosDoXML() {
 	var xmlString = localStorage.getItem('dados_recibos_xml');
 	var xmlDoc = new DOMParser().parseFromString(xmlString, 'text/xml');
 
@@ -374,4 +457,4 @@ function adicionarDadosAoXML(dados) {
 
 		console.log('ID: ' + (i + 1), dados);
 	}
-}*/
+}

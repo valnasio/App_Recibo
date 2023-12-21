@@ -143,11 +143,32 @@
                                 <option value="2027">2027</option>
                             </select>
                         </div>
+                        <!-- campo dia no html com script que puxa o dia atual-->
+                        <script>
+                            function configurarDiaAtual() {
+                                var dataAtual = new Date();
+                                var diaInput = document.getElementById('dia2');
+                                // Adiciona um zero à esquerda para dias menores que 10
+                                diaInput.value = (dataAtual.getDate() < 10 ? '0' : '') + dataAtual.getDate();
+                                diaInput.placeholder = diaInput.value;
+                            }
+
+                            function validarDia() {
+                                var diaInput = document.getElementById('dia2');
+                                var dia = parseInt(diaInput.value);
+
+                                if (isNaN(dia) || dia < 1 || dia > 31) {
+                                    alert('Por favor, insira um número válido entre 1 e 31 para o dia.');
+                                    diaInput.value = ''; // Limpa o campo
+                                }
+                            }
+                        </script>
 
                         <div class="form-group col-sm-4 flex-column d-flex">
                             <label class="form-control-label px-3"><b>DIA</b></label>
-                            <input placeholder="00" id="dia2" type="number" min="1" max="31">
+                            <input placeholder="" id="dia2" type="number" min="1" max="31" onblur="validarDia()">
                         </div>
+
                     </div>
 
                     <h6><b>ASSUNTO</b></h6>
@@ -170,17 +191,39 @@
                                 style="text-transform: uppercase;" id="nome" type="TEXT"
                                 placeholder="NOME DO FUNCIONÁRIO(A)"> </div>
 
-                        <div class="form-group col-sm-6 flex-column d-flex"> <label
-                                class="form-control-label px-3"><b>CPF</b></span></label> <input
-                                style="text-transform: uppercase;" id="cpf" type="number"
-                                OnKeyPress="formatar('###-###-###.##',this)" placeholder="NÚMERO DO CPF">
+                        <script>
+                            function formatarCPF() {
+                                var cpfInput = document.getElementById('cpf');
+                                var cpf = cpfInput.value.replace(/\D/g, ''); // Remove caracteres não numéricos
+                                if (cpf.length > 11) {
+                                    cpf = cpf.slice(0, 11); // Limita o CPF a 11 caracteres
+                                }
+                                // Formata o CPF com pontos e traço
+                                cpfInput.value = cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
+                            }
+
+                            function formatarRG() {
+                                var rgInput = document.getElementById('rg');
+                                var rg = rgInput.value.replace(/\D/g, ''); // Remove caracteres não numéricos
+                                if (rg.length > 10) {
+                                    rg = rg.slice(0, 10); // Limita o RG a 10 caracteres
+                                }
+                                // Formata o RG com pontos e traço
+                                rgInput.value = rg.replace(/(\d{2})(\d{3})(\d{3})(\d{1})/, '$1.$2.$3-$4');
+                            }
+                        </script>
+
+                        <div class="form-group col-sm-6 flex-column d-flex">
+                            <label class="form-control-label px-3"><b>CPF</b></label>
+                            <input style="text-transform: uppercase;" id="cpf" type="text" placeholder="NÚMERO DO CPF"
+                                oninput="formatarCPF()">
                         </div>
 
-                        <div class="form-group col-sm-6 flex-column d-flex"> <label
-                                class="form-control-label px-3"><b>RG</b></span></label> <input
-                                style="text-transform: uppercase;" id="rg" type="number" placeholder="NÚMERO DO RG">
+                        <div class="form-group col-sm-6 flex-column d-flex">
+                            <label class="form-control-label px-3"><b>RG</b></label>
+                            <input style="text-transform: uppercase;" id="rg" type="text" placeholder="NÚMERO DO RG"
+                                oninput="formatarRG()">
                         </div>
-
 
                         <div class="form-group col-sm-6 flex-column d-flex"> <label
                                 class="form-control-label px-3"><b>OBSERVAÇÃO</b></span></label>
