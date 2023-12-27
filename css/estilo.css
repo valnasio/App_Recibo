@@ -141,3 +141,9 @@ footer {
   bottom: 0;
   background-color: #000000;
 }
+
+.btn-success {
+  color: #0e0e14;
+  background-color: #e7d107;
+  border-color: #d4c602;
+}

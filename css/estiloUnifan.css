@@ -129,5 +129,11 @@ footer {
     position: fixed;
     bottom: 0;
     opacity: .8;
-    background-color: #303030;
+    background-color: #000000;
+}
+
+.btn-success {
+    color: #11111d;
+    background-color: #0deb05;
+    border-color: #037425;
 }
