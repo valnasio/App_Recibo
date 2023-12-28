@@ -4,8 +4,8 @@ var ultimoId = 0;
 
 function Data() {
 	var data = new Date();
-	var dias = ["Domingo", "Segunda", "TerÃ§a", "Quarta", "Quinta", "Sexta", "SÃ¡bado"];
-	var meses = ["", "Janeiro", "Fevereiro", "MarÃ§o", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
+	var dias = ["Domingo", "Segunda", "TerÇa", "Quarta", "Quinta", "Sexta", "SÃ¡bado"];
+	var meses = ["", "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
 
 	document.write(dias[data.getDay()] + ", " + data.getDate() + " de " + meses[data.getMonth()] + " de " + data.getFullYear());
 }
@@ -24,7 +24,7 @@ function converteNumeroPorExtenso(numero) {
 	var dezenasMultiplos = ['VINTE', 'TRINTA', 'QUARENTA', 'CINQUENTA', 'SESSENTA', 'SETENTA', 'OITENTA', 'NOVENTA'];
 	var centenas = ['', 'CENTO', 'DUZENTOS', 'TREZENTOS', 'QUATROCENTOS', 'QUINHENTOS', 'SEISCENTOS', 'SETECENTOS', 'OITOCENTOS', 'NOVECENTOS'];
 
-	var milhares = ['', ' MIL', ' MIL', ' MILHÃƒO', ' MILHÃ•ES'];
+	var milhares = ['', ' MIL', ' MIL', ' MILHÃO', ' MILHÕES', 'BILHÃO', 'TRILHÃO', 'QUADRILHÃO'];
 
 	var valorEmPalavras = '';
 
@@ -111,7 +111,7 @@ function getDadosComissao() {
 	var dataAtual = new Date();
 
 	// Preencher o input de mÃªs com o nome do mÃªs atual
-	var meses = ["JANEIRO", "FEVEREIRO", "MARÃ‡O", "ABRIL", "MAIO", "JUNHO", "JULHO", "AGOSTO", "SETEMBRO", "OUTUBRO", "NOVEMBRO", "DEZEMBRO"];
+	var meses = ["JANEIRO", "FEVEREIRO", "MARÇO", "ABRIL", "MAIO", "JUNHO", "JULHO", "AGOSTO", "SETEMBRO", "OUTUBRO", "NOVEMBRO", "DEZEMBRO"];
 	var mesAtual = meses[dataAtual.getMonth()];
 	document.getElementById('mes2').value = mesAtual;
 
@@ -134,13 +134,33 @@ function gerarPDFComissao() {
 	var rg = document.getElementById('rg').value;
 	var cpf = document.getElementById('cpf').value;
 	var dia2 = document.getElementById('dia2').value;
+	// alteração para abrir pdf na aba 
+
+	var pdf = new jsPDF();
+
+	// Adicionando a chamada para a função updateImportancia
+	updateImportancia();
+
+	pdf.setProperties({
+		title: 'Recibo Comissão',
+		subject: 'Recibo ',
+		keywords: 'gerador de recibos pessoal',
+		creator: 'gPDF, javascript, web 2.0, ajax'
+	});
+
+
+
+
+	//fim da alteração pra abrir na aba o pdf  
+
+
 
 	if (valor == "" || importancia == "" || nome == "" || referencia == "") {
 		alert('Preencha todos os campos do Formulário.');
 		valor.focus();
 		return false;
 	} else {
-		alert('Vão ser geradas duas vias do Recibo de Comissão em PDF do funcionário(a) ' + nome + '.\nClique em OK para finalizar.');
+		alert('Será gerado o Recibo de Comissão em PDF em nome de  ' + nome + '.\nClique em OK para concluir.');
 	}
 
 	var pdf = new jsPDF();
@@ -179,9 +199,9 @@ function gerarPDFComissao() {
 	pdf.setFontType("normal");
 	pdf.text(46, 40, loja);
 	pdf.setFontType("bold");
-	pdf.text(20, 48, 'CNPJ: ');
+	pdf.text(20, 48, 'CNPJ/CPF: ');
 	pdf.setFontType("normal");
-	pdf.text(34, 48, cnpj);
+	pdf.text(44, 48, cnpj);
 	pdf.setFontType("bold");
 	pdf.text(20, 56, 'A IMPORTÂNCIA DE: ');
 	pdf.setFontType("normal");
@@ -307,6 +327,10 @@ function gerarPDFComissao() {
 
 	// Criar um nome único para o PDF usando o ID
 	var nomePDF = 'Recibo_' + nome + '_ID' + ultimoId + '.pdf';
+	var pdfData = pdf.output();
+	var blob = new Blob([pdfData], { type: 'application/pdf' });
+	var pdfURL = URL.createObjectURL(blob);
+	window.open(pdfURL, '_blank');
 
 	pdf.save(nomePDF);
 
@@ -326,38 +350,11 @@ function gerarPDFComissao() {
 
 
 function construirXML(dados) {
-	// Implemente a lÃ³gica para construir a string XML com base nos dados fornecidos
-	// Aqui estÃ¡ um exemplo simples:
 	const xmlString = `<recibo><id>${dados.id}</id><nome>${dados.nome}</nome></recibo>`;
 	return xmlString;
 }
 
-function gerarESalvarXML(dados) {
-	var xmlString = localStorage.getItem('dados_recibos_xml');
-
-	if (!xmlString) {
-		xmlString = '<?xml version="1.0" encoding="UTF-8"?><recibos></recibos>';
-	}
-
-	var xmlDoc = new DOMParser().parseFromString(xmlString, 'text/xml');
-
-	var reciboElement = xmlDoc.createElement('recibo');
-
-	for (var prop in dados) {
-		var campoElement = xmlDoc.createElement(prop);
-		var campoValor = xmlDoc.createTextNode(dados[prop]);
-		campoElement.appendChild(campoValor);
-		reciboElement.appendChild(campoElement);
-	}
-
-	xmlDoc.documentElement.appendChild(reciboElement);
-
-	xmlString = new XMLSerializer().serializeToString(xmlDoc);
-	localStorage.setItem('dados_recibos_xml', xmlString);
-}
-
-
-
+// Função para gerar e salvar XML
 function gerarESalvarXML(dados) {
 	const xmlString = construirXML(dados);
 
@@ -373,7 +370,7 @@ function gerarESalvarXML(dados) {
 		.catch(error => console.error(error));
 }
 
-
+// Função para gerar recibo
 function gerarRecibo() {
 	var dados = {
 		nome: document.getElementById('nome').value,
@@ -382,7 +379,7 @@ function gerarRecibo() {
 		cpf: document.getElementById('cpf').value,
 		rg: document.getElementById('rg').value,
 		valor: parseFloat(document.getElementById('valor').value)
-		// Adicione outros campos conforme necessÃ¡rio
+		// Adicione outros campos conforme necessário
 	};
 
 	fetch('http://localhost:3000/DbApp', {
@@ -403,28 +400,20 @@ function gerarRecibo() {
 		});
 }
 
-document.getElementById('gerar').addEventListener('click', gerarRecibo);
-
-
-
-
-
+// Função para adicionar dados ao XML
 function adicionarDadosAoXML(dados) {
 	var xmlString = localStorage.getItem('dados_recibos_xml');
 	var xmlDoc;
 
 	if (!xmlString) {
-		// Se o arquivo XML nÃ£o existir, crie um novo
 		xmlString = '<?xml version="1.0" encoding="UTF-8"?><recibos></recibos>';
 		localStorage.setItem('dados_recibos_xml', xmlString);
 	}
 
 	xmlDoc = new DOMParser().parseFromString(xmlString, 'text/xml');
 
-	// Crie um novo elemento "recibo"
 	var reciboElement = xmlDoc.createElement('recibo');
 
-	// Adicione os elementos filhos (campos) ao elemento "recibo"
 	for (var prop in dados) {
 		var campoElement = xmlDoc.createElement(prop);
 		var campoValor = xmlDoc.createTextNode(dados[prop]);
@@ -432,14 +421,13 @@ function adicionarDadosAoXML(dados) {
 		reciboElement.appendChild(campoElement);
 	}
 
-	// Adicione o elemento "recibo" ao documento XML
 	xmlDoc.documentElement.appendChild(reciboElement);
 
-	// Atualize o arquivo XML no armazenamento
 	xmlString = new XMLSerializer().serializeToString(xmlDoc);
 	localStorage.setItem('dados_recibos_xml', xmlString);
 }
 
+// Função para exibir dados do XML
 function exibirDadosDoXML() {
 	var xmlString = localStorage.getItem('dados_recibos_xml');
 	var xmlDoc = new DOMParser().parseFromString(xmlString, 'text/xml');
@@ -458,3 +446,5 @@ function exibirDadosDoXML() {
 		console.log('ID: ' + (i + 1), dados);
 	}
 }
+
+document.getElementById('gerar').addEventListener('click', gerarRecibo);
